@@ -1,0 +1,22 @@
+/* 
+    Created on : 11/11/2019, 04:13:28 PM
+    Author     : Aylin Yepez
+*/
+
+table, td, th {
+  border: 1px solid black;
+}
+p{
+    margin: 0;
+    padding: 0;
+}
+
+#divDebe {
+    width: 50%;
+    float: left;
+}
+
+#divHaber {
+    width: 50%;
+    float: left;
+}

@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\modelo",
+    "\\src\\modelo\\helpers",
+    "\\src\\public",
+    "\\src\\public\\css",
+    "\\src\\public\\js",
+    "\\src\\routes",
+    "\\src\\views"
+  ],
+  "SelectedNode": "\\src\\views\\index.html",
+  "PreviewInSolutionExplorer": false
+}
