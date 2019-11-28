@@ -35,4 +35,20 @@ router.post('/resultados', async (req, res) => {
     res.render('resultados.html', { arreglo, totalesEResu, cortoAP, largoAP, capitalC });
 });
 
+router.post('/cedulas', (req, res) => {
+    var datos = req.body;
+    var numProcesos = datos.pTerminada.length;
+    for (var i = 0; i < numProcesos; i++) {
+        for (const prop in datos) {
+            if (datos[prop][i] !== "") {
+                datos[prop][i] = parseFloat(datos[prop][i]);
+            } else
+                datos[prop][i] = 0;
+        }
+    }
+    console.log(datos);
+    res.send("Hello");
+    //res.render('cedulas.html', {datos, numProcesos});
+});
+
 module.exports = router;

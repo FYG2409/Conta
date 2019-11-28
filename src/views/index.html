@@ -69,9 +69,57 @@
         <input type="submit" value="EnviaDiario" />
     </form>
 
+    <form action="/cedulas" method="post" style="background-color:chartreuse">
 
+        <div id="conteProcesos" style="background-color: aqua">
 
+            <table class="tablaProcesos">
+                <th colspan="4">PROCESO 1</th>
+                <tr>
+                    <td colspan="2"><input type="number" name="pTerminada" placeholder="Produccion Terminada" /></td>
+                    <td colspan="2"><input type="number" name="pProceso" placeholder="Produccion en Proceso" /></td>
+                </tr>
+                <tr>
+                    <td>Concepto</td>
+                    <td>Inventario Inicial</td>
+                    <td>Costo Incurrido</td>
+                    <td>% Avance</td>
+                </tr>
+                <tr hidden>
+                    <td>SemiProducto</td>
+                    <td><input type="number" name="inicialSP" /></td>
+                    <td><input type="number" name="incurridosSP" /></td>
+                    <td><input type="number" name="avanceSP" /></td>
+                </tr>
+                <tr>
+                    <td>Materia Prima</td>
+                    <td><input type="number" name="inicialMP" /></td>
+                    <td><input type="number" name="incurridosMP" /></td>
+                    <td><input type="number" name="avanceMP" /></td>
+                </tr>
+                <tr>
+                    <td>Mano de Obra</td>
+                    <td><input type="number" name="inicialMO" /></td>
+                    <td><input type="number" name="incurridosMO" /></td>
+                    <td><input type="number" name="avanceMO" /></td>
+                </tr>
+                <tr>
+                    <td>Cargos Indirectos</td>
+                    <td><input type="number" name="inicialCI" /></td>
+                    <td><input type="number" name="incurridosCI" /></td>
+                    <td><input type="number" name="avanceCI" /></td>
+                </tr>
+            </table>
 
+        </div>
+        
+        <input type="submit" value="CreaCedulas" />
+        <input type="button" onclick="newProcess()" id="nuevoProceso" value="NuevoProceso" />
+    </form>
+
+    
+
+    
 
     <!--Para FIREBASE-->
     <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-app.js"></script>
