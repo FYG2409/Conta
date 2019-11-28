@@ -128,7 +128,7 @@
                 <tr>
                     <td>Utilidad Neta</td>
                     <td></td>
-                    <td><%= utiAImp - totalesEResu[9] %></td>
+                    <td><%= uNeta = utiAImp - totalesEResu[9] %></td>
                 </tr>
             </table>
         </div>
@@ -202,10 +202,6 @@
                         <td colspan="2"></td>
                         <td colspan="2">CAPITAL</td>
                     </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-
                         <% for(var i=0; i<capitalC.length; i++){ %>
                         <tr>
                             <td></td>
@@ -217,7 +213,13 @@
                             <% } %>
                         </tr>
                         <% } %>
-                    </tr>
+                    <tr>
+                            <td></td>
+                            <td></td>
+                            <% totalC = totalC + uNeta%>
+                            <td>Utilidad Neta</td>
+                            <td><%= uNeta %></td>
+                        </tr>
                     <tr>
                         <td></td>
                         <td></td>
