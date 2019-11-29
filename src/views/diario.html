@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport">
+    <title>DIARIO</title>
+    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+</head>
+<body>
+
+    <div>
+        <form action="/regCuenta" method="post">
+            <input type="text" placeholder="Cuenta" name="cuentaR">
+            <select name="tipoR">
+                <option>otro</option>
+                <option>activo</option>
+                <option>pasivo</option>
+                <option>capital</option>
+                <option>resultados</option>
+            </select>
+            <select name="plazoR">
+                <option>otro</option>
+                <option>corto</option>
+                <option>largo</option>
+            </select>
+            <input type="submit">
+        </form>
+    </div>
+    <br />
+    <br />
+    <div>
+        <input id="nuevaFila" type="button" value="nueva cuenta">
+        <% if(bSubCuentas===true){ %>
+        <input id="nuevaSubCuenta" type="button" value="nueva subCuenta">
+        <% } %>
+        <input id="btnNuevoAsiento" type="button" value="nuevo Asiento">
+    </div>
+
+    <form method="post" action="/resultados" onsubmit="return enviaFormulario()">
+
+        <input type="text" name="ptu" placeholder="PTU" />
+        <input type="text" name="isr" placeholder="ISR del ejercicio" />
+
+
+        <table id="tablaDiario">
+            <tr>
+                <th colspan="3">DIARIO</th>
+            </tr>
+            <tr>
+                <td>DEBE</td>
+                <td>CONCEPTO</td>
+                <td>HABER</td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <p name="indice">1</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="number" name="debe" placeholder="Debe">
+                </td>
+                <td>
+                    <select id="sConcepto" name="concepto"></select>
+                </td>
+                <td>
+                    <input type="number" name="haber" placeholder="Haber">
+                </td>
+            </tr>
+        </table>
+        <input type="submit" value="EnviaDiario" />
+    </form>
+
+
+    <!--Para FIREBASE-->
+    <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-database.js"></script>
+    <script src="/js/configFirebase.js"></script>
+    <!------------------>
+    <!--Logica-->
+    <% if(bSubCuentas===true){ %>
+    <select id="nomProcesos">
+        <% for(var k=0; k
+        <nomProcesos.length; k++){ %>
+            <option><%= nomProcesos[k] %></option>
+            <% } %>
+    </select>
+    <% } %>
+
+
+    <script src="/js/cuentas.js"></script>
+
+</body>
+</html>

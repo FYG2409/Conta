@@ -40,6 +40,39 @@
                 <% } %>
         </div>
 
+        <!--T de subCuentas-->
+        <div id="divTsubCuentas">
+            <% for(var i=0; i<subArreglo.length; i++){ %>
+                <table>
+                    <tr>
+                        <th colspan="2"><%= subArreglo[i].subCuenta %></th>
+                    </tr>
+                    <%
+                    var tam = subArreglo[i].debe.length
+                    if(tam
+                    <subArreglo[i].haber.length){ tam=subArreglo[i].haber.length;
+                                                  }
+                                                  %>
+                        <% for(var j=0; j<tam; j++){ %>
+                            <tr>
+                                <td><%= subArreglo[i].debe[j] %></td>
+                                <td><%= subArreglo[i].haber[j] %></td>
+                            </tr>
+                            <% } %>
+                            <tr>
+                                <% if(subArreglo[i].totalDebe>subArreglo[i].totalHaber){ %>
+                                <th><%= subArreglo[i].saldo %></th>
+                                <th></th>
+                                <% }else{ %>
+                                <th></th>
+                                <th><%= subArreglo[i].saldo %></th>
+                                <% }%>
+                            </tr>
+                </table>
+                <br />
+                <% } %>
+        </div>
+
         <div id="divEResultados">
             <table>
                 <tr>
@@ -132,7 +165,7 @@
                 </tr>
             </table>
         </div>
-        
+
         <div id="divBalance">
             <table>
                 <tr>
@@ -148,11 +181,11 @@
                 </tr>
                 <% var totalA=0, totalP=0, totalC=0; %>
                 <%
-                    var tam = cortoAP[0].length;
-                    if(tam<cortoAP[1].length){
-                        tam = cortoAP[1].length                           
-                    }
-                    for(var i=0; i<tam; i++){ 
+                var tam = cortoAP[0].length;
+                if(tam
+                <cortoAP[1].length){ tam=cortoAP[1].length
+                                     }
+                                     for(var i=0; i<tam; i++){
                 %>
                     <tr>
                         <% if( cortoAP[0][i] !== undefined){ %>
@@ -174,9 +207,9 @@
                     <%
                         var tam = largoAP[0].length;
                         if(tam<largoAP[1].length){
-                            tam = largoAP[1].length                           
+                            tam = largoAP[1].length
                         }
-                        for(var i=0; i<tam; i++){ 
+                        for(var i=0; i<tam; i++){
                     %>
                         <tr>
                             <% if( largoAP[0][i] !== undefined){ %>
@@ -238,5 +271,230 @@
             </table>
         </div>
 
+        <div id="divCedulas">
+            <% var valuacionF%>
+            <% for(var j=0; j<numProcesos; j++){ %>
+                <div>
+                    <table>
+                        <tr>
+                            <th colspan="4"><%= datos.nomProceso[j] %></th>
+                        </tr>
+                        <tr>
+                            <td>Concepto</td>
+                            <td>Inventario Inicial</td>
+                            <td>+Costo Incurrido</td>
+                            <td>=Costo TOTAL</td>
+                        </tr>
+                        <%
+                        var existeSP;
+                        if(datos.inicialSP[j] !== 0){
+                        existeSP = true;
+                        }else{
+                        existeSP = false;
+                        }
+                        %>
+                        <% if(existeSP){ %>
+                        <tr>
+                            <td>SemiProducto</td>
+                            <td><%= datos.inicialSP[j] %></td>
+                            <% if(datos.incurridosSP[j] === 0 || datos.incurridosSP[j] === undefined){ %>
+                            <% var totalSP = datos.inicialSP[j] + valuacionF  %>
+                            <td><%= valuacionF %></td>
+                            <% }else{ %>
+                            <% var totalSP = datos.inicialSP[j] + datos.incurridosSP[j]  %>
+                            <td><%= datos.incurridosSP[j] %></td>
+                            <%}%>
+                            <td><%= totalSP %></td>
+                        </tr>
+                        <% } %>
+                        <tr>
+                            <td>Materia Prima</td>
+                            <td><%= datos.inicialMP[j] %></td>
+                            <td><%= datos.incurridosMP[j] %></td>
+                            <% var totalMP = datos.inicialMP[j] + datos.incurridosMP[j]  %>
+                            <td><%= totalMP %></td>
+                        </tr>
+                        <tr>
+                            <td>Mano de Obra</td>
+                            <td><%= datos.inicialMO[j] %></td>
+                            <td><%= datos.incurridosMO[j] %></td>
+                            <% var totalMO = datos.inicialMO[j] + datos.incurridosMO[j]  %>
+                            <td><%= totalMO %></td>
+                        </tr>
+                        <tr>
+                            <td>Cargos Indirectos</td>
+                            <td><%= datos.inicialCI[j] %></td>
+                            <td><%= datos.incurridosCI[j] %></td>
+                            <% var totalCI = datos.inicialCI[j] + datos.incurridosCI[j]  %>
+                            <td><%= totalCI %></td>
+                        </tr>
+                    </table>
+                    <br /><br />
+                    <table>
+                        <th colspan="6">PRODUCCION EQUIVALENTE</th>
+                        <tr>
+                            <td>Concepto</td>
+                            <td>Produccion Terminada</td>
+                            <td>Produccion en Proceso</td>
+                            <td>% Avance</td>
+                            <td>Unidades Equivalentes</td>
+                            <td>Producto Equivalente</td>
+                        </tr>
+                        <% if(existeSP){ %>
+                        <tr>
+                            <td>SemiProducto</td>
+                            <td><%= datos.pTerminada[j] %></td>
+                            <td><%= datos.pProceso[j] %></td>
+                            <td><%= datos.avanceSP[j] %></td>
+                            <% var udsEquivSP = (datos.avanceSP[j]/100)* datos.pProceso[j]%>
+                            <td><%= udsEquivSP %></td>
+                            <% var prodEquivSP = datos.pTerminada[j] + udsEquivSP %>
+                            <td><%= prodEquivSP %></td>
+                        </tr>
+                        <% } %>
+                        <tr>
+                            <td>Materia Prima</td>
+                            <td><%= datos.pTerminada[j] %></td>
+                            <td><%= datos.pProceso[j] %></td>
+                            <td><%= datos.avanceMP[j] %></td>
+                            <% var udsEquivMP = (datos.avanceMP[j]/100)* datos.pProceso[j]%>
+                            <td><%= udsEquivMP %></td>
+                            <% var prodEquivMP = datos.pTerminada[j] + udsEquivMP %>
+                            <td><%= prodEquivMP %></td>
+                        </tr>
+                        <tr>
+                            <td>Mano de Obra</td>
+                            <td><%= datos.pTerminada[j] %></td>
+                            <td><%= datos.pProceso[j] %></td>
+                            <td><%= datos.avanceMO[j] %></td>
+                            <% var udsEquivMO = (datos.avanceMO[j]/100)* datos.pProceso[j] %>
+                            <td><%= udsEquivMO %></td>
+                            <% var prodEquivMO = datos.pTerminada[j] + udsEquivMO %>
+                            <td><%= prodEquivMO %></td>
+                        </tr>
+                        <tr>
+                            <td>Cargos Indirectos</td>
+                            <td><%= datos.pTerminada[j] %></td>
+                            <td><%= datos.pProceso[j] %></td>
+                            <td><%= datos.avanceCI[j] %></td>
+                            <% var udsEquivCI = (datos.avanceCI[j]/100)* datos.pProceso[j] %>
+                            <td><%= udsEquivCI %></td>
+                            <% var prodEquivCI = datos.pTerminada[j] + udsEquivCI %>
+                            <td><%= prodEquivCI %></td>
+                        </tr>
+                    </table>
+                    <br /><br />
+                    <table>
+                        <tr>
+                            <th colspan="4">COSTOS UNITARIOS</th>
+                        </tr>
+                        <tr>
+                            <td>Concepto</td>
+                            <td>Costo Total</td>
+                            <td>/Produccion Equivalente</td>
+                            <td>=Costo Unitario</td>
+                        </tr>
+                        <%  var unitarioSP = 0 %>
+                        <% if(existeSP){ %>
+                        <tr>
+                            <td>SemiProducto</td>
+                            <td><%= totalSP %></td>
+                            <td><%= prodEquivSP %></td>
+                            <% unitarioSP = totalSP / prodEquivSP %>
+                            <td><%= unitarioSP %></td>
+                        </tr>
+                        <% } %>
+                        <tr>
+                            <td>Materia Prima</td>
+                            <td><%= totalMP %></td>
+                            <td><%= prodEquivMP %></td>
+                            <% var unitarioMP = parseFloat(totalMP) / parseFloat(prodEquivMP) %>
+                            <td><%=  unitarioMP %></td>
+                        </tr>
+                        <tr>
+                            <td>Mano de Obra</td>
+                            <td><%= totalMO %></td>
+                            <td><%= prodEquivMO %></td>
+                            <% var unitarioMO = totalMO / prodEquivMO %>
+                            <td><%= unitarioMO %></td>
+                        </tr>
+                        <tr>
+                            <td>Cargos Indirectos</td>
+                            <td><%= totalCI %></td>
+                            <td><%= prodEquivCI %></td>
+                            <% var unitarioCI = totalCI / prodEquivCI %>
+                            <td><%= unitarioCI %></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">TOTAL</td>
+                            <% var totalUnitario = unitarioSP + unitarioMP + unitarioMO + unitarioCI %>
+                            <td><%= totalUnitario %></td>
+                        </tr>
+                    </table>
+                    <br /><br />
+                    <table>
+                        <th colspan="4">VALUACION DE PRODUCCION EN PROCESO</th>
+                        <tr>
+                            <td>Concepto</td>
+                            <td>Unidades Equivalentes</td>
+                            <td>*Costo Unitario</td>
+                            <td>=</td>
+                        </tr>
+                        <% var valuacionSP = 0 %>
+                        <% if(existeSP){ %>
+                        <tr>
+                            <td>SemiProducto</td>
+                            <td><%= udsEquivSP %></td>
+                            <td><%= unitarioSP %></td>
+                            <% valuacionSP = udsEquivSP * unitarioSP %>
+                            <td><%= valuacionSP %></td>
+                        </tr>
+                        <% } %>
+                        <tr>
+                            <td>Materia Prima</td>
+                            <td><%= udsEquivMP %></td>
+                            <td><%= unitarioMP %></td>
+                            <% var valuacionMP = udsEquivMP * unitarioMP %>
+                            <td><%= valuacionMP %></td>
+                        </tr>
+                        <tr>
+                            <td>Mano de Obra</td>
+                            <td><%= udsEquivMO %></td>
+                            <td><%= unitarioMO %></td>
+                            <% var valuacionMO = udsEquivMO * unitarioMO %>
+                            <td><%= valuacionMO %></td>
+                        </tr>
+                        <tr>
+                            <td>Cargos Indirectos</td>
+                            <td><%= udsEquivCI %></td>
+                            <td><%= unitarioCI %></td>
+                            <% var valuacionCI = udsEquivCI * unitarioCI %>
+                            <td><%= valuacionCI %></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">TOTAL</td>
+                            <td><%= valuacionSP + valuacionMP + valuacionMO + valuacionCI%></td>
+                        </tr>
+                    </table>
+                    <br /><br />
+                    <table>
+                        <th colspan="4">VALUACION DE PRODUCCION TERMINADA</th>
+                        <tr>
+                            <td>Produccion Terminada</td>
+                            <td>*Total Costo Unitario</td>
+                            <td>=</td>
+                        </tr>
+                        <tr>
+                            <td><%= datos.pTerminada[j] %></td>
+                            <td><%= totalUnitario %></td>
+                            <td><%=  valuacionF = datos.pTerminada[j] * totalUnitario%></td>
+                        </tr>
+                    </table>
+                    <br /><br />
+                    <hr />
+                    <br /><br />
+                </div>
+                <% } %>
+        </div>
     </body>
 </html>

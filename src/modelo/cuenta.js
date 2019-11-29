@@ -166,9 +166,70 @@ function llenaTotalesEResultados(ptu, isr, arreglo, conceptosObj) {
     return totalesTit;
 }
 
+
+//PARA SUBCUENTAS
+async function llenaSubCuentas(body) {
+    var subConceptosObj = [];
+
+    var arreglo = [];
+
+    for (var i = 0; i < body.subConcepto.length; i++) {
+        var existe = false;
+        var debeTxt = body.subDebe[i];
+        var haberTxt = body.subHaber[i];
+        var conceptoTxt = body.subConcepto[i]
+        var j;
+        for (j = 0; j < subConceptosObj.length; j++) {
+            if (subConceptosObj[j] === conceptoTxt) {
+                existe = true;
+                break;
+            }
+        }
+        if (!existe) {
+            subConceptosObj.push(conceptoTxt);
+            var tHaber, tDebe;
+            if (haberTxt === "") {
+                tHaber = 0;
+            } else {
+                tHaber = parseFloat(haberTxt);
+            }
+            if (debeTxt === "") {
+                tDebe = 0;
+            } else {
+                tDebe = parseFloat(debeTxt);
+            }
+
+            var subCuenta = {
+                subCuenta: conceptoTxt,
+                debe: [debeTxt],
+                haber: [haberTxt],
+                totalDebe: tDebe,
+                totalHaber: tHaber,
+                saldo: 0
+            }
+            arreglo.push(subCuenta);
+        } else {
+            if (debeTxt !== "") {
+                arreglo[j].debe.push(debeTxt);
+                arreglo[j].totalDebe = arreglo[j].totalDebe + parseFloat(debeTxt);
+            }
+            if (haberTxt !== "") {
+                arreglo[j].haber.push(haberTxt);
+                arreglo[j].totalHaber = arreglo[j].totalHaber + parseFloat(haberTxt);
+            }
+        }
+    }
+    
+    arreglo = await obtenSaldos(arreglo);
+
+    return arreglo;
+}
+
+
 const cuenta = {};
 cuenta.registraCuenta = registraCuenta;
 cuenta.llenaArregloConceptos = llenaArregloConceptos;
 cuenta.separaPlazo = separaPlazo;
+cuenta.llenaSubCuentas = llenaSubCuentas;
 
 module.exports = cuenta;

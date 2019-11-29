@@ -1,5 +1,10 @@
 const nodo_Cuentas = 'Cuentas';
 var cuentas = [];
+var iConcepto;
+nomProcesos = document.getElementById("nomProcesos");
+newNomProceso = nomProcesos.cloneNode(true);
+nomProcesos.style.visibility = "hidden";
+
 
 //LLENAR SELECT CUENTAS
 db.ref(nodo_Cuentas).once("value").then(function (snapshot) {
@@ -92,6 +97,54 @@ function validaFila() {
     }
 }
 
+//AGREGA NUEVA SUBCUENTA
+
+const btnNuevaSubCuenta = document.getElementById("nuevaSubCuenta");
+btnNuevaSubCuenta.addEventListener("click", function () {
+    if (validaFila()) {
+        nuevaSubCuenta();
+    }
+});
+
+function nuevaSubCuenta() {
+    //CREANDO ELEMENTOS PARA TABLA
+    var tr = document.createElement("tr");
+    var tdD = document.createElement("td");
+    var tdC = document.createElement("td");
+    var tdH = document.createElement("td");
+    var tabla = document.getElementById("tablaDiario");
+
+    //CREANDO ELEMENTOS INPUT DEBE
+    var iDebe = document.createElement("input");
+    iDebe.setAttribute("type", "number");
+    iDebe.setAttribute("name", "subDebe");
+    iDebe.setAttribute("placeholder", "Debe");
+    //CREANDO ELEMENTO INPUT PARA CONCEPTO
+    iConcepto = newNomProceso.cloneNode(true);
+    iConcepto.setAttribute("type", "text");
+    iConcepto.setAttribute("name", "subConcepto");
+        
+    //CREANDO ELEMENTO INPUT PARA HABER
+    var iHaber = document.createElement("input");
+    iHaber.setAttribute("type", "number");
+    iHaber.setAttribute("name", "subHaber");
+    iHaber.setAttribute("placeholder", "Haber");
+
+    //AÑADIENDO INPUT A TABLA
+    tdD.appendChild(iDebe);
+    tdC.appendChild(iConcepto);
+    tdH.appendChild(iHaber);
+
+    //AÑADIENDO FILA A TABLA
+    tr.appendChild(tdD);
+    tr.appendChild(tdC);
+    tr.appendChild(tdH);
+    tabla.appendChild(tr);
+}
+
+
+//Aqui termina lo de subCuentas
+
 //AGREGA NUEVO ASIENTO
 const btnNuevoAsiento = document.getElementById('btnNuevoAsiento');
 btnNuevoAsiento.addEventListener("click", function () {
@@ -159,6 +212,7 @@ function enviaFormulario() {
 }
 
 function validaFinal() {
+    /*
     var totalDebe = 0, totalHaber = 0;
     var lonDebe = document.getElementsByName("debe").length;
     for (var i = 0; i < lonDebe; i++) {
@@ -182,19 +236,6 @@ function validaFinal() {
     } else {
         alert("El debe no es igual al haber");
         return false;
-    } 
-}
-
-
-
-//PARA CEDULAS
-var tablaProcesos = document.getElementsByClassName("tablaProcesos")[0];
-var nuevaTabla = tablaProcesos.cloneNode("tablaProcesos");
-function newProcess() {
-    var conteProcesos = document.getElementById("conteProcesos");
-    console.log("Aqui");
-    nuevaTabla.rows[3].removeAttribute("hidden");
-    nuevaTabla.rows[3].children[2].firstElementChild.disabled = true;
-    nuevaTabla.rows[0].innerText = "PROCESO " + (document.getElementsByClassName("tablaProcesos").length + 1);
-    conteProcesos.insertAdjacentElement("beforeend", nuevaTabla);
+    } */
+    return true;
 }
