@@ -3,22 +3,22 @@ const router = Router();
 const cuenta = require('../modelo/cuenta');
 const db = require('../database').database();
 var datos, numProcesos;
+var bSubCuentas;
 
 router.get('/', (req, res) => {
     res.render('index.html');
 });
 
 router.post('/soloDiario', (req, res) => {
-    var bSubCuentas = false;
+    bSubCuentas = false;
     console.log(datos);
     res.render('diario.html', {bSubCuentas});
 });
 
 router.post('/diario', (req, res) => {
-    var bSubCuentas = true;
+    bSubCuentas = true;
     var nomProcesos = req.body.nomProceso;
     console.log(nomProcesos);
-    var bSubCuentas = true;
 
     //GUARDANDO DATOS DE PROCESOS
     datos = req.body;
@@ -56,17 +56,34 @@ router.post('/resultados', async (req, res) => {
     var arreglo = arrs[0]
     var totalesEResu = arrs[1];
     var arrs2 = await cuenta.separaPlazo(arreglo);
+    var totalesEProduccion = await cuenta.llenaTotalesECProduccion(arreglo);
 
     var cortoAP = arrs2[0];
     var largoAP = arrs2[1];
     var capitalC = arrs2[2];
 
     //PARA SUB CUENTAS
+    var subArreglo;
+    var totalesEProduccion;
+    bSubCuentas = true;
+    if (bSubCuentas) {
+        subArreglo = await cuenta.llenaSubCuentas(req.body);
+        totalesEProduccion = await cuenta.llenaTotalesECProduccion(arreglo);
+        console.log("totalesEProduccion");
+        console.log(totalesEProduccion);
+        console.log("SubArreglo");
+        console.log(subArreglo);
+    }
+    console.log("Arreglo");
+    console.log(arreglo);
 
-    var subArreglo = await cuenta.llenaSubCuentas(req.body);
-    console.log(subArreglo);
+    console.log(bSubCuentas);
 
-    res.render('resultados.html', { arreglo, totalesEResu, cortoAP, largoAP, capitalC, subArreglo, datos, numProcesos });
+    console.log("------------------------------------------");
+
+
+
+    res.render('resultados.html', { arreglo, totalesEResu, cortoAP, largoAP, capitalC, subArreglo, datos, numProcesos, bSubCuentas, totalesEProduccion });
 });
 /*
 router.post('/cedulas', (req, res) => {

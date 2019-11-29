@@ -30,10 +30,12 @@
     <br />
     <div>
         <input id="nuevaFila" type="button" value="nueva cuenta">
+        <input id="btnElimaFila" type="button" value="elimina cuenta">
         <% if(bSubCuentas===true){ %>
         <input id="nuevaSubCuenta" type="button" value="nueva subCuenta">
         <% } %>
         <input id="btnNuevoAsiento" type="button" value="nuevo Asiento">
+        <input id="btnNuevoSubAsiento" type="button" value="nuevo Asiento SubCuenta">
     </div>
 
     <form method="post" action="/resultados" onsubmit="return enviaFormulario()">

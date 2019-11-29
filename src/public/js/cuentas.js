@@ -1,9 +1,12 @@
 const nodo_Cuentas = 'Cuentas';
 var cuentas = [];
 var iConcepto;
+
 nomProcesos = document.getElementById("nomProcesos");
-newNomProceso = nomProcesos.cloneNode(true);
-nomProcesos.style.visibility = "hidden";
+if (nomProcesos !== null) {
+    newNomProceso = nomProcesos.cloneNode(true);
+    nomProcesos.style.visibility = "hidden";
+}
 
 
 //LLENAR SELECT CUENTAS
@@ -97,14 +100,43 @@ function validaFila() {
     }
 }
 
+//ELIMINA ULTIMA FILA
+const btnElimaFila = document.getElementById("btnElimaFila");
+btnElimaFila.addEventListener("click", function () {
+    if (validaPenultimaFila()) {
+        tabla = document.getElementById("tablaDiario");
+        lonFilas = tabla.rows.length;
+        tabla.deleteRow((lonFilas - 1));
+    }
+});
+
+function validaPenultimaFila() {
+    tabla = document.getElementById("tablaDiario");
+    lonFilas = tabla.rows.length;
+    //Trayendo valores de la ultima fila
+    var filaAValidar = tabla.rows[(lonFilas - 2)].getElementsByTagName("td")[0].firstElementChild.getAttribute("name");
+
+    if (filaAValidar === 'indice') {
+        alert("No puedes eliminar esta fila");
+        return false;
+    } else {
+        return true;
+    }
+
+    console.log(filaAValidar);
+}
+
+
 //AGREGA NUEVA SUBCUENTA
 
 const btnNuevaSubCuenta = document.getElementById("nuevaSubCuenta");
-btnNuevaSubCuenta.addEventListener("click", function () {
-    if (validaFila()) {
-        nuevaSubCuenta();
-    }
-});
+if (btnNuevaSubCuenta !== null) {
+    btnNuevaSubCuenta.addEventListener("click", function () {
+        if (validaFila()) {
+            nuevaSubCuenta();
+        }
+    });
+}
 
 function nuevaSubCuenta() {
     //CREANDO ELEMENTOS PARA TABLA
@@ -150,12 +182,22 @@ const btnNuevoAsiento = document.getElementById('btnNuevoAsiento');
 btnNuevoAsiento.addEventListener("click", function () {
     if (validaFila()) {
         if (validaAsiento()) {
-            nuevoAsiento();
+            nuevoAsiento('cuenta');
         }
     }
 });
 
-function nuevoAsiento() {
+//AGREGA NUEVO ASIENTO DE SUBCUENTA
+const btnNuevoSubAsiento = document.getElementById('btnNuevoSubAsiento');
+btnNuevoSubAsiento.addEventListener("click", function () {
+    if (validaFila()) {
+        if (validaAsiento()) {
+            nuevoAsiento('subCuenta');
+        }
+    }
+});
+
+function nuevoAsiento(tipo) {
     //CREANDO ELEMENTOS PARA TABLA
     var tr = document.createElement("tr");
     var td = document.createElement("td");
@@ -178,7 +220,11 @@ function nuevoAsiento() {
     tabla.appendChild(tr);
 
     //poniendo nueva filas
-    nuevaFila();
+    if (tipo === 'cuenta') {
+        nuevaFila();
+    } else if (tipo === 'subCuenta') {
+        nuevaSubCuenta();
+    }
 }
 
 function validaAsiento() {

@@ -40,6 +40,7 @@
                 <% } %>
         </div>
 
+        <% if(bSubCuentas){ %>
         <!--T de subCuentas-->
         <div id="divTsubCuentas">
             <% for(var i=0; i<subArreglo.length; i++){ %>
@@ -72,6 +73,8 @@
                 <br />
                 <% } %>
         </div>
+
+        <% } %>
 
         <div id="divEResultados">
             <table>
@@ -270,6 +273,8 @@
                     </tr>
             </table>
         </div>
+
+        <% if(bSubCuentas){ %>
 
         <div id="divCedulas">
             <% var valuacionF%>
@@ -496,5 +501,77 @@
                 </div>
                 <% } %>
         </div>
+
+
+        <div id="divECostoProduccion">
+            <table>
+                <tr>
+                    <th colspan="2">ESTADO DE COSTO DE PRODUCCION</th>
+                </tr>
+                <tr>
+                    <td>Inventario Inicial de Materia Prima</td>
+                    <td><%= 0 %></td>
+                </tr>
+                <tr>
+                    <td>+ Compra de Materia Prima</td>
+                    <td><%= 0 %></td>
+                </tr>
+                <tr>
+                    <td>= Materia Prima Disponible</td>
+                    <% var mpDisponible = 0 + 0  %>
+                    <td><% mpDisponible %></td>
+                </tr>
+                <tr>
+                    <td>- Inventario Final de Materia Prima</td>
+                    <td><%= totalesEProduccion[0] %></td>
+                </tr>
+                <tr>
+                    <td>= Materia Prima Consumida</td>
+                    <% if(mpDisponible===0){
+                    var mpConsumida =  totalesEProduccion[0]
+                    }else{
+                    var mpConsumida =  mpDisponible - totalesEProduccion[0]
+                    } %>
+                    <td><%= mpConsumida %></td>
+                </tr>
+                <tr>
+                    <td>+ Mano de Obra Directa</td>
+                    <td><%= totalesEProduccion[1] %></td>
+                </tr>
+                <tr>
+                    <td>= Costo Primo</td>
+                    <% var costoPrimo = mpConsumida + totalesEProduccion[1] %>
+                    <td><%= costoPrimo%></td>
+                </tr>
+                <tr>
+                    <td>+ Cargos Indirectos</td>
+                    <td><%= totalesEProduccion[2] %></td>
+                </tr>
+                <tr>
+                    <td>= Costo Incurrido</td>
+                    <% var costoIncurrido =  costoPrimo + totalesEProduccion[2] %>
+                    <td><%= costoIncurrido %></td>
+                </tr>
+                <tr>
+                    <td>+ Inventario Inicial de Produccion en Proceso</td>
+                    <td><%= totalesEProduccion[3] %></td>
+                </tr>
+                <tr>
+                    <td>= Total de Produccion en Proceso</td>
+                    <% var tProdEnProceso = costoIncurrido + totalesEProduccion[3] %>
+                    <td><%= tProdEnProceso%></td>
+                </tr>
+                <tr>
+                    <td>- Inventario Final de Produccion en Proceso</td>
+                    <td><%= totalesEProduccion[4] %></td>
+                </tr>
+                <tr>
+                    <td>= Costo de Produccion Terminada</td>
+                    <td><%= tProdEnProceso - totalesEProduccion[4] %></td>
+                </tr>
+            </table>
+        </div>
+
+        <% } %>
     </body>
 </html>

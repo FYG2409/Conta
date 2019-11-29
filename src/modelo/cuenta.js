@@ -2,6 +2,7 @@ const db = require('../database').database();
 
 const nodo_Cuentas = 'Cuentas';
 const nodo_eResultados = 'eResultados';
+var conceptosObj;
 
 function registraCuenta(cuentaTxt, cuentaObj) {
     db.ref(nodo_Cuentas + '/' + cuentaTxt).set(cuentaObj).then(() => {
@@ -61,7 +62,7 @@ function obtenSaldos(arreglo) {
 async function llenaArregloConceptos(body) {
     var lonCon = body.concepto.length;
 
-    var conceptosObj = [];
+    conceptosObj = [];
 
     var arreglo = [];
 
@@ -167,6 +168,48 @@ function llenaTotalesEResultados(ptu, isr, arreglo, conceptosObj) {
 }
 
 
+
+
+
+function llenaTotalesECProduccion(arreglo) {
+    console.log("Conce");
+    console.log(conceptosObj);
+    var tit = ['Almacen de Materias Primas', 'Mano de Obra', 'Cargos Indirectos', 'Produccion en Proceso'];
+    var totalesTit = [];
+    for (var k = 0; k < (tit.length - 1); k++) {
+        var indice = conceptosObj.indexOf(tit[k]);
+        if (indice !== -1) {
+            var indeT = arreglo[indice].saldo;
+            console.log(indeT);
+            if (indeT === 0) {
+                console.log("Es 0");
+                var tamHaber = arreglo[indice].haber.length;
+                var tamDebe = arreglo[indice].haber.length;
+                
+                if (parseFloat(arreglo[indice].haber[tamHaber - 1]) === arreglo[indice].totalDebe) {
+                    indeT = arreglo[indice].totalDebe;
+                } else if (parseFloat(arreglo[indice].debe[tamDebe - 1]) === arreglo[indice].totalHaber){
+                    indeT = arreglo[indice].totalHaber;
+                }
+            }
+            totalesTit.push(indeT);
+        } else {
+            totalesTit.push(0);
+        }
+    }
+
+    //PARA ENVIAR EL PRIMER DATO DE PRODUCCION EN PROCESO QUE ES EL INVENTARIO INICIAL
+    var indice = conceptosObj.indexOf(tit[3]);
+    
+    var sal = parseFloat(arreglo[indice].debe[0]);
+    totalesTit.push(sal);
+    sal = parseFloat(arreglo[indice].saldo);
+    totalesTit.push(sal);
+
+    return totalesTit;
+}
+
+
 //PARA SUBCUENTAS
 async function llenaSubCuentas(body) {
     var subConceptosObj = [];
@@ -231,5 +274,6 @@ cuenta.registraCuenta = registraCuenta;
 cuenta.llenaArregloConceptos = llenaArregloConceptos;
 cuenta.separaPlazo = separaPlazo;
 cuenta.llenaSubCuentas = llenaSubCuentas;
+cuenta.llenaTotalesECProduccion = llenaTotalesECProduccion;
 
 module.exports = cuenta;
